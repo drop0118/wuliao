@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('test', ['uses' => 'TestController@crawler']);
+Route::get('images', ['uses' => 'ImagesController@getImageList']);
