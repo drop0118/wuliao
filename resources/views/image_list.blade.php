@@ -24,6 +24,16 @@
 		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page-1]);?>' class="previous-btn"> &lt; 前滚翻</a>
 		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page+1]);?>' class="next-btn">后空翻 &gt;</a>
 	</div>
+	<div id="loading" style="display: none;">
+        <div class="pacman">
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+        </div>
+        加载中
+    </div>
 </body>
 </html>
 
@@ -61,9 +71,10 @@ $(document).ready(function(){
 	    var img = $(this).prev('img');
 	    var org_src = img.attr('org_src');
 	    if (org_src != '') {
+	    	$(this).append($('#loading'));
 	        img.attr('src', org_src);
 	        img.removeAttr('org_src');
-	        $(this).remove();
+	        // $(this).remove();
 	    }
 	})
 })
