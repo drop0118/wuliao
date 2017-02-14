@@ -3,7 +3,7 @@
 <head>
 <meta name="viewport" http-equiv="Content-Type"  content="text/html; charset=UTF-8 width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>无聊图</title>
-<link href="/css/image.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo url('/css/image.css');?>" rel="stylesheet" type="text/css" />
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body>
@@ -21,8 +21,8 @@
 	<?php }?>
 	</div>
 	<div class="page-Btn">
-		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page-1]);?>' class="previous-btn"> &lt; 前滚翻</a>
-		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page+1]);?>' class="next-btn">后空翻 &gt;</a>
+		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page-1]);?>' class="previous-btn"> &laquo; 前滚翻</a>
+		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page+1]);?>' class="next-btn">后空翻 &raquo;</a>
 	</div>
 	<div id="loading" style="display: none;">
         <div class="pacman">
