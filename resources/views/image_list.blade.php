@@ -9,13 +9,20 @@
 <body>
 	<div class='imageList'>
 	<?php foreach ($images as $key => $image) {?>
-		<div class="row">
+		<div class="row" style="position: relative;<?php if(($key+1)%30==0){ echo 'border:0px;';}?>">
 			<?php echo $image->description ? '<p>'.$image->description.'</p>':'';?>
 			<?php if(substr($image->mw_url, -3,3)=='jpg'){?>
 				<img  style="max-width: 100%; max-height: 700px;" src="<?php echo $image->mw_url;?>">
 			<?php }else{?>
-				<img src="<?php echo $image->mw_url;?>" org_src="<?php echo $image->normal_url;?>"  style="max-width: 100%; max-height: 700px;">
-				<div class="gif-mask" >PLAY</div>
+				<img src="<?php echo $image->mw_url;?>" org_src="<?php echo $image->normal_url;?>"  class='gif' style="max-width: 100%; max-height: 700px;">
+				<div class="gif-mask" style="display: none;">PLAY</div>
+				<div class="pacman" style="position: absolute;display: none;">
+		            <div class=""></div>
+		            <div class=""></div>
+		            <div class=""></div>
+		            <div class=""></div>
+		            <div class=""></div>
+		        </div>
 			<?php }?>
 		</div>
 	<?php }?>
@@ -24,37 +31,32 @@
 		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page-1]);?>' class="previous-btn"> &laquo; 前滚翻</a>
 		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page+1]);?>' class="next-btn">后空翻 &raquo;</a>
 	</div>
-	<div id="loading" style="display: none;">
-        <div class="pacman">
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
-        </div>
-        加载中
-    </div>
 </body>
 </html>
 
 <script src="//cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-    $('.imageList').find('.gif-mask').each(function () {
-       	$(this).parent().css('position', 'relative');
-        var img =$(this).prev();
+	$('.gif').one("load", function() {
+        var img =$(this);
         var position = img.position();
-       	$(this).css({
+       	$(this).next().css({
             'height': img.height(),
             'width': img.width(),
             'line-height': img.height() + 'px',
             'left': position.left,
             'top': position.top
+        }).show();
+        $(this).next().next().css({
+        	'left': '20%',
+            'top': '40%',
         });
-    });
+	}).each(function() {
+	  if(this.complete) $(this).load();
+	});
+    
 	FastClick.attach(document.body);
 	$('.imageList img').each(function () {
-		// $(this).css('max-width', '100%');
 		$(this).click(function () {
 			if ($(this).css('max-height') == 'none') {
 				var max_width = $(this).parent().parent().width();
@@ -67,14 +69,15 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '.gif-mask',function(){
+		$(this).next().show();
 	    var parent = $(this).parent();
 	    var img = $(this).prev('img');
 	    var org_src = img.attr('org_src');
 	    if (org_src != '') {
-	    	$(this).append($('#loading'));
 	        img.attr('src', org_src);
 	        img.removeAttr('org_src');
-	        // $(this).remove();
+	        $(this).next().hide();
+	        $(this).remove();
 	    }
 	})
 })

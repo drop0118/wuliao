@@ -30,7 +30,7 @@ a:active{text-decoration:none;}
 
 .page-Btn {
 	width: 91%;
-	margin: 15px auto;
+	margin: 25px auto;
 	border: 1px solid #EEE;
 	border-radius: 35px;
 	height: 50px;
@@ -212,8 +212,7 @@ a:active{text-decoration:none;}
     -webkit-transform: translate(-100px, -6.25px);
             transform: translate(-100px, -6.25px); } }
 
-.pacman {
-  position: relative; }
+.pacman { position: relative; }
   .pacman > div:nth-child(2) {
     -webkit-animation: pacman-balls 1s 0s infinite linear;
             animation: pacman-balls 1s 0s infinite linear; }
