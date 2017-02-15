@@ -48,8 +48,8 @@ $(document).ready(function(){
             'top': position.top
         }).show();
         $(this).next().next().css({
-        	'left': '20%',
-            'top': '40%',
+        	'left': (img.width()-50)*0.5,
+            'top': ($(this).parent().height()+60-50)*0.5,
         });
 	}).each(function() {
 	  if(this.complete) $(this).load();

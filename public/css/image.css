@@ -59,7 +59,7 @@ a:active{text-decoration:none;color: #333;}
 }
 
 .gif-mask {
-    background-color: #000000;
+    background-color: rgba(0,0,0,0.3);
     color: #ffffff;
     cursor: pointer;
     opacity: 0.3;
