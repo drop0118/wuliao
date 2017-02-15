@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Exception;
 use App\Images;
 use DB;
+use Cache;
 
 class Crawler extends Command
 {
@@ -14,7 +15,7 @@ class Crawler extends Command
      *
      * @var string
      */
-    protected $signature = 'crwaler';
+    protected $signature = 'crawler';
 
     /**
      * The console command description.
@@ -29,7 +30,7 @@ class Crawler extends Command
      * @return mixed
      */
 
-        public function _getUrlContent($url) {
+    public function _getUrlContent($url) {
         $handle = fopen($url, "r");
         if ($handle) {
             $content = stream_get_contents($handle, 1024 * 1024);
@@ -71,11 +72,14 @@ class Crawler extends Command
     public function handle() {
         set_time_limit(0);
         $result = array();
-        for ($i=2012; $i <=2017 ; $i++) { 
+        $current_year = Cache::get('year');
+        $max_year = date('Y');
+        $start_year = isset($current_year)?$current_year:2012;
+        for ($i=$start_year; $i <=$max_year ; $i++) { 
             try {
                 DB::beginTransaction();
                 $url = "http://jandan.net/pic";
-                if($i==2017){
+                if($i==$max_year){
                     $url = $url;
                 }else{
                     $url.='-'.$i;
@@ -84,7 +88,9 @@ class Crawler extends Command
                 $pattern = '/<span.*?class=\".*?current-comment-page.*?\".*?>\[(.*?)\]<\/span>/is';
                 $page = preg_match_all($pattern, $content, $matches);
                 $max_page = $matches[1][0];
-                for ($k=1; $k <=$max_page; $k++) { 
+                $current_page = Cache::get('page');
+                $start_page = isset($current_page)?$current_page:1;
+                for ($k=$start_page; $k <=$max_page; $k++) { 
                     $url_a=$url.'/page-'.$k.'#comments';
                     $content_year = $this->_getUrlContent($url_a);
                     if ($content_year) {
@@ -104,15 +110,13 @@ class Crawler extends Command
                         
                     }
                 }
-                $code = 1;
-                $result[] = $i.'SUCC';
+                echo $i.'年抓取成功<br/>';
                 DB::commit();
             }catch (Exception $e) {
-                $code = $e->getCode();
-                $result['error_msg']= $e->getMessage();
                 DB::rollback();
             }
+            Cache::put('year', $i, 60*7);
+            Cache::put('page', $max_page+1, 60*7);
         }
-        return array('result'=>$result);
     }
 }
