@@ -9,7 +9,7 @@
 <body>
 	<div class='imageList'>
 	<?php foreach ($images as $key => $image) {?>
-		<div class="row" style="position: relative;<?php if(($key+1)%30==0){ echo 'border:0px;';}?>">
+		<div class="row" style="position: relative;">
 			<?php echo $image->description ? '<p>'.$image->description.'</p>':'';?>
 			<?php if(substr($image->mw_url, -3,3)=='jpg'){?>
 				<img  style="max-width: 100%; max-height: 700px;" src="<?php echo $image->mw_url;?>">
