@@ -28,8 +28,8 @@
 	<?php }?>
 	</div>
 	<div class="page-Btn">
-		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page-1]);?>' class="previous-btn"> &laquo; 前滚翻</a>
-		<a href='<?php echo url('images').'?'.http_build_query(['page'=>$current_page+1]);?>' class="next-btn">后空翻 &raquo;</a>
+		<a href='<?php echo url('/').'?'.http_build_query(['page'=>$current_page-1]);?>' class="previous-btn"> &laquo; 前滚翻</a>
+		<a href='<?php echo url('/').'?'.http_build_query(['page'=>$current_page+1]);?>' class="next-btn">后空翻 &raquo;</a>
 	</div>
 </body>
 </html>
@@ -73,10 +73,12 @@ $(document).ready(function(){
 	    var parent = $(this).parent();
 	    var img = $(this).prev('img');
 	    var org_src = img.attr('org_src');
+	    img.one('load', function () {
+	        $(this).next().hide();
+	    });
 	    if (org_src != '') {
 	        img.attr('src', org_src);
 	        img.removeAttr('org_src');
-	        $(this).next().hide();
 	        $(this).remove();
 	    }
 	})
